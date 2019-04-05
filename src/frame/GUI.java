@@ -1,7 +1,15 @@
 package frame;
 
+import entity.Ball;
+import entity.Coordinates;
+import entity.Drawable;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class GUI {
 	public static void createAndShowGUI() {
@@ -12,11 +20,25 @@ public class GUI {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		jFrame.setSize(screenSize);
 
-		//Component
-		JComponent desktopPane = new JDesktopPane();
-		desktopPane.setSize(screenSize);
+		Ball ball1 = new Ball(new Coordinates(50,50));
+		// Another thread
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		executor.submit((Runnable) () -> {
+			while(true) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				ball1.changeDirection(1, 1);
+			}
+		});
 
-		jFrame.add(desktopPane);
+		//Component
+		List<Drawable> drawable = new ArrayList<>();
+		drawable.add(ball1);
+
+		jFrame.add(new DrawPanel(drawable));
 
 		//Show
 		jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
