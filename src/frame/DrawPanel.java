@@ -14,6 +14,7 @@ public class DrawPanel extends JPanel {
 	}
 
 	public void paint(Graphics g) {
+		super.paintComponent(g);
 		drawables.forEach(drawable -> drawable.draw(g));
 		repaint();
 	}

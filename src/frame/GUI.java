@@ -1,18 +1,18 @@
 package frame;
 
 import entity.Ball;
-import entity.Coordinates;
 import entity.Drawable;
+import utils.BallCreator;
+import utils.BallExecutor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class GUI {
 	public static void createAndShowGUI() {
+		BallCreator ballCreator = new BallCreator();
 		//Create Frame
 		JFrame jFrame = new JFrame("Ball");
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -20,24 +20,11 @@ public class GUI {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		jFrame.setSize(screenSize);
 
-		Ball ball1 = new Ball(new Coordinates(50,50));
-		// Another thread
-		ExecutorService executor = Executors.newSingleThreadExecutor();
-		executor.submit((Runnable) () -> {
-			while(true) {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				ball1.changeDirection(1, 1);
-			}
-		});
+		List<Ball> balls = ballCreator.create(2, screenSize);
+		new BallExecutor(balls).execute();
 
 		//Component
-		List<Drawable> drawable = new ArrayList<>();
-		drawable.add(ball1);
-
+		List<Drawable> drawable = new ArrayList<>(balls);
 		jFrame.add(new DrawPanel(drawable));
 
 		//Show
