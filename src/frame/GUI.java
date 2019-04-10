@@ -11,16 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GUI {
-	public static void createAndShowGUI() {
-		BallCreator ballCreator = new BallCreator();
-		//Create Frame
-		JFrame jFrame = new JFrame("Ball");
-		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	private JFrame jFrame;
 
+	public void createAndShowGUI() {
+		BallCreator ballCreator = new BallCreator();
+		//Setup Frame
+		jFrame = new JFrame("Ball");
+		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		jFrame.setSize(screenSize);
 
-		List<Ball> balls = ballCreator.create(2, screenSize);
+		List<Ball> balls = ballCreator.create(1, screenSize, this);
 		new BallExecutor(balls).execute();
 
 		//Component
@@ -31,5 +32,13 @@ public class GUI {
 		jFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		jFrame.pack();
 		jFrame.setVisible(true);
+	}
+
+	public int getWidth() {
+		return this.jFrame.getWidth();
+	}
+
+	public int getHeight() {
+		return this.jFrame.getHeight();
 	}
 }

@@ -22,7 +22,7 @@ public class BallExecutor {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                balls.forEach(ball -> ball.changeDirection(2, 2));
+                balls.forEach(Ball::move);
             }
         });
     }
